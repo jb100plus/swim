@@ -73,6 +73,14 @@ class LastLog(models.Model):
         return f"'{str(self.starter)}' logged on { str(self.log)}"
 
 
+class ListHash(models.Model):
+    hash = models.CharField(max_length=16)
+    
+    def __str__(self):
+        """Returns a string representation of a hash."""
+        return f"'{str(self.hash)}'"
+
+
 def getresult():
     return Log.objects.values('starter__id', 'starter__firstname', 'starter__lastname').annotate(count=Count('logtimestamp')).order_by('-count')
 
