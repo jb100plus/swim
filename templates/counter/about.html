@@ -1,0 +1,23 @@
+{% extends "counter/layout.html" %}
+{% block title %}
+Results
+{% endblock %}
+{% block content %}
+<p>Prototype für das Loggen beim 24h Schwimmen.</p>
+    {% if result %}
+        <table>
+            <thead>
+                <th>Platz</th><th>Name</th><th>Bahnen</th>
+            </thead>
+            <tbody>
+                {% for r in result %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><a href="{% url 'logdetailview' starter_id=r.starter__id %}"> {{ r.starter__firstname }} {{ r.starter__lastname }}</a></td>
+                        <td>{{ r.count }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

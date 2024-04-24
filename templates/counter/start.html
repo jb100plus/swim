@@ -1,0 +1,35 @@
+{% extends "counter/layout.html" %}
+{% block title %}
+Home
+{% endblock %}
+{% block content %}
+<p>overview of starters</p>
+<h2>Starter</h2>
+{% if starter_list %}
+    <table class="starter_list">
+        <thead>
+        <tr>
+            <th>Starter</th>
+            <th>Date Time</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for starter in starter_list %}
+                <tr>
+                    <td>
+                        {{ starter }}
+                    </td>
+                    <td>
+                        <button type="button">
+                            <a href="{% url 'add_log' starter_id=starter.id %}">New Log!</a>
+                        </button>
+                    </td>                
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>All starter are in the race.</a></p>
+{% endif %}
+
+{% endblock %}

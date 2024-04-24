@@ -1,0 +1,44 @@
+
+{% if log_list %}
+<table class="log_list">
+    <thead>
+    <tr>
+        <th>Starter</th>
+        <th>Last Log</th>
+        <th>since</th>
+        <th>action</th>
+    </tr>
+    </thead>
+    <tbody>
+
+        async
+    <form method="POST" class="log-form"></form>
+        {% csrf_token %}
+        {% for log in log_list %}
+        <form method="POST" class="log-form"></form>
+            <tr>
+                <td>
+                        <a href="{% url 'logdetailview' starter_id=log.starter.id %}"> {{ log.starter }}</a>
+                </td>
+                <td>
+                    {{ log.log.gettimestr }}
+                </td>
+                <td style="text-align: right;">
+                    {{ log.log.since }}
+                </td>
+                <td>
+                    {% if log.log.since > 10 %}
+                    <a href="{% url 'add_log' starter_id=log.starter.id %}"><button type="button" style="height:32px;width:96px">
+                        <table><tr><td>{{ log.starter.startnumber }}</td><td> Log!</td></tr></table>
+                        {% else %}
+                        {% endif %}
+                    </button></a>
+                </td>                
+            </tr>
+        </form>
+        {% endfor %}
+    </div>
+    </form>
+    </tbody>
+</table>
+{% endif %}

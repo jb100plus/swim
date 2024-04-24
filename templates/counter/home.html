@@ -1,0 +1,32 @@
+{% extends "counter/layout.html" %}
+{% block title %}
+Home
+{% endblock %}
+{% block content %}
+<p>Übersicht letzte Logs Starter</p>
+<h2>Logs</h2>
+
+{% if log_list %}
+    <div id="activestartertable">
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
+    <script>
+        setInterval(function(){
+        $.ajax({
+        url: '{% url 'asyncview' %}',
+        success: function(data) {
+            if ($.trim(data)){
+                // printWindow = window.open('');
+                // printWindow.document.write(data);
+                // printWindow.print();
+                $('#activestartertable').html(data);
+                }
+            }
+      })}, 500); // Refresh the content every 0.5 seconds;
+    </script>
+
+{% else %}
+    <p>No messages have been logged.</a></p>
+{% endif %}
+
+{% endblock %}

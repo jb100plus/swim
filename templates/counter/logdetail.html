@@ -1,0 +1,39 @@
+{% extends "counter/layout.html" %}
+{% block title %}
+Home
+{% endblock %}
+{% block content %}
+<p>Logs für den Starter</p>
+<h2>Logged messages</h2>
+
+{% if log_list %}
+    <table class="log_list">
+        <thead>
+        <tr>
+            <th>Starter</th>
+            <th>Date Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <form method="POST" class="log-form"></form>
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% for log in log_list %}
+                <tr>
+                    <td>
+                        {{ log.starter }}
+                    </td>
+                    <td>
+                        {{ log.gettimestr }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </form>
+        </tbody>
+    </table>
+    <h2>Number of Logs: {{ log_list|length }}  </h2>
+{% else %}
+    <p>No messages have been logged.</a></p>
+{% endif %}
+
+{% endblock %}

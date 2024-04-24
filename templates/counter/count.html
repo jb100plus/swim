@@ -1,0 +1,57 @@
+{% extends "counter/layout_count.html" %}
+{% block extra_head_tags %}
+    {{ block.super }}
+    <meta http-equiv="refresh" content="1">
+{% endblock %}
+{% block title %}
+Count
+{% endblock %}
+{% block content %}
+<p>Übersicht letzte Logs Starter</p>
+<h2>Logged messages</h2>
+
+{% if log_list %}
+    <table class="log_list">
+        <thead>
+        <tr>
+            <th>Starter</th>
+            <th>last Log</th>
+            <th align="center">since (sec)</th>
+            <th>action</th>
+        </tr>
+        </thead>
+        <tbody>
+        
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% for log in log_list %}
+            <form method="POST" class="log-form"></form>
+                <tr>
+                    <td>
+                            <a href="{% url 'logdetailview' starter_id=log.starter.id %}"> {{ log.starter }}</a>
+                    </td>
+                    <td>
+                        {{ log.log.gettimestr }}
+                    </td>
+                    <td style="text-align: right;">
+                        {{ log.log.since }}
+                    </td>
+                    <td>
+                        {% if log.log.since > 10 %}
+                        <a href="{% url 'add_log' starter_id=log.starter.id %}"><button type="button" style="height:32px;width:96px">
+                            <table><tr><td>{{ log.starter.startnumber }}</td><td> Log!</td></tr></table>
+                            {% else %}
+                            {% endif %}
+                        </button></a>
+                    </td>                
+                </tr>
+            </form>
+            {% endfor %}
+        
+        </tbody>
+    </table>
+{% else %}
+    <p>No messages have been logged.</a></p>
+{% endif %}
+
+{% endblock %}
