@@ -3,26 +3,32 @@
 Home
 {% endblock %}
 {% block content %}
-<p>overview of starters</p>
-<h2>Starter</h2>
+<h1>Starter</h1>
+<h2>overview of starters not in the race</h2>
 {% if starter_list %}
     <table class="starter_list">
         <thead>
         <tr>
             <th>Starter</th>
-            <th>Date Time</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
             {% for starter in starter_list %}
                 <tr>
-                    <td>
-                        {{ starter }}
+                    <td><a href="{% url 'logdetailview' starter_id=starter.id %}"> {{ starter }}</a>
                     </td>
                     <td>
-                        <button type="button">
-                            <a href="{% url 'add_log' starter_id=starter.id %}">New Log!</a>
-                        </button>
+                        <a href="{% url 'back_to_swim' starter_id=starter.id lane=1 %}" class="button-28">To the race Lane 1</a>
+                    </td>  
+                    <td>
+                        <a href="{% url 'back_to_swim' starter_id=starter.id lane=2 %}" class="button-28">To the race Lane 2</a>
+                    </td>  
+                    <td>
+                        <a href="{% url 'back_to_swim' starter_id=starter.id lane=3 %}" class="button-28">To the race Lane 3</a>
+                    </td>  
+                    <td>
+                        <a href="{% url 'back_to_swim' starter_id=starter.id lane=4 %}" class="button-28">To the race Lane 4</a>
                     </td>                
                 </tr>
             {% endfor %}
@@ -33,3 +39,4 @@ Home
 {% endif %}
 
 {% endblock %}
+

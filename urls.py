@@ -9,6 +9,8 @@ urlpatterns = [
     path("about/", views.about, name="about"),
     path("contact/", views.contact, name="contact"),
     path("add_log/<int:starter_id>", views.add_log, name='add_log'),
+    path("take_a_break/<int:starter_id>", views.take_a_break, name='take_a_break'),
+    path("back_to_swim/<int:starter_id>/<int:lane>", views.back_to_swim, name='back_to_swim'),
     path("logdetailview/<int:starter_id>", views.StarterLogListView.as_view(), name='logdetailview'),
-    path("async/", views.asyncview, name='asyncview'),
+    path("loglist/", views.loglist, name='loglist'),
 ]

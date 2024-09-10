@@ -1,35 +1,65 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from counter.models import Log, Starter, LastLog, ListHash
+from counter.models import Log, Starter, LastLog, STATE
 from django.views.generic import ListView
 from django.utils.timezone import datetime
 from counter import models
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
-import xxhash
-import random
+from channels.layers import get_channel_layer
+from apscheduler.schedulers.background import BackgroundScheduler
+from asgiref.sync import async_to_sync
+
+
+current_loglist = None
+
+# executet on start or reload
+scheduler = None
+def check():
+    layer = get_channel_layer()
+    async_to_sync(layer.group_send)("countergroup", {'type': 'chat.message', 'message': 'dummy'})
+
+
+# Function to run every 3 seconds
+if scheduler is None:
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(check, 'cron', second='*/30')
+    scheduler.start()
+
+
+def home_list_view(request):
+    return render(request, "counter/home.html")
 
 
 # Create your views here.
-class HomeListView(ListView):
+class CountListView(ListView):
     """Renders the home page, with a list of all messages."""
     model = LastLog
     ordering = ['log']
 
     def get_context_data(self, **kwargs):
-        context = super(HomeListView, self).get_context_data(**kwargs)
+        context = super(CountListView, self).get_context_data(**kwargs)
         return context
 
-
-home_list_view = HomeListView.as_view(
+'''
+# outer html for the count view
+count_list_view = CountListView.as_view(
     context_object_name="log_list",
-    template_name="counter/home.html",
+    template_name="counter/wscount.html",
     )
+'''
+# outer html for the count view
+def count_list_view(request):
+    return render(request, "counter/wscount.html")
 
 
-count_list_view = HomeListView.as_view(
-    context_object_name="log_list",
-    template_name="counter/count.html",
-    )
+
+# inner html fot the count_list_view
+def loglist(request):
+    global current_loglist
+    if current_loglist is None:
+        current_loglist = LastLog.objects.filter(starter__state__in=[STATE.SWIM, STATE.IN]).order_by('log')
+    # render every call because timers
+    return render(request, "counter/loglist.html", {'log_list': current_loglist})
 
 
 class StarterLogListView(ListView):
@@ -47,49 +77,27 @@ class StarterLogListView(ListView):
         pk = self.kwargs["starter_id"]
         return super().get_queryset().filter(starter=pk)
 
-'''
-logdetailview = StarterLogListView.as_view(
-    context_object_name="log_list",
-    template_name="counter/logdetail.html",
-    )
-'''
-
 
 def about(request):
     result = models.getresult()
     context ={'result':result}
-    print(result)
     return render(request, "counter/about.html", context=context)
 
 def contact(request):
     return render(request, "counter/contact.html")
 
 
-
 def add_log(request, starter_id):
-    starter = Starter.objects.get(pk = starter_id)
-    #log = Log.objects.create(starter=starter)
-    log = Log(starter=starter)
-    try:
-        log.full_clean()
-    except ValidationError:
-        print('Scheisse')# Do something when validation is not passing
-    else:
-        # Validation is ok we will save the instance
-        log.save()
-    try:
-        lastlog = LastLog.objects.get(starter=starter)
-        lastlog.log = log
-        lastlog.save()
-    except LastLog.DoesNotExist:
-        lastlog = LastLog(starter=starter, log=log)
-        lastlog.save()
-    response = redirect('home')
-    return response
+    models.add_log(starter_id)
+    global current_loglist
+    current_loglist = None
+    layer = get_channel_layer()
+    async_to_sync(layer.group_send)("countergroup", {'type': 'chat.message', 'message': 'dummy'})
+    return redirect('count')
 
-# Create your views here.
+
 class StartListView(ListView):
-    """Renders the home page, with a list of all messages."""
+    """Renders the home page, with a list of all starters not in the race."""
     model = Starter
     ordering = ['startnumber']
 
@@ -100,7 +108,8 @@ class StartListView(ListView):
     # show only starter with no logs (i.e. who are not yet in the race)
     def get_queryset(self, **kwargs):
         qs = super().get_queryset(**kwargs)
-        return qs.filter(lastlog=None)
+        # return qs.filter(lastlog=None)
+        return qs.filter(state=STATE.OUT)
 
 
 start_list_view = StartListView.as_view(
@@ -109,25 +118,19 @@ start_list_view = StartListView.as_view(
     )
 
 
-def asyncview(request):
-    log_list = LastLog.objects.order_by('log')
-    newhash = xxhash.xxh64(str(log_list)).hexdigest()
-    print(newhash)
+def take_a_break(request, starter_id):
+    models.take_a_break(starter_id)
+    global current_loglist
+    current_loglist = None
+    layer = get_channel_layer()
+    async_to_sync(layer.group_send)("countergroup", {'type': 'chat.message', 'message': 'dummy'})
+    return redirect('count')
 
-    try:
-        oldhash = ListHash.objects.get(pk=1)
-    except ObjectDoesNotExist:
-        lh = ListHash.objects.create(hash=newhash)
-        lh.save()
-    if oldhash.hash == newhash:
-        r = random.random()
-        print(r)
-        if r > 1.0:
-            log_list = None
-    else:
-        print('ungleich')
-        oldhash.hash = newhash
-        oldhash.save()
 
-    return render(request, "counter/async.html", {'log_list': log_list})
-
+def back_to_swim(request, starter_id, lane):
+    models.back_to_swim(starter_id, lane)
+    global current_loglist
+    current_loglist = None
+    layer = get_channel_layer()
+    async_to_sync(layer.group_send)("countergroup", {'type': 'chat.message', 'message': 'dummy'})
+    return redirect('start')

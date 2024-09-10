@@ -1,0 +1,55 @@
+{% if log_list %}
+    <table class="log_list">
+        <thead>
+        <tr>
+            <th>Starter</th>
+            <th>Bahn</th>
+            <th>Last Log</th>
+            <th>since</th>
+            <th>action</th>
+            <th>pause</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for log in log_list %}
+            <!--{% if log.starter.lane == 4 %}-->
+            <!--
+                {% else %}
+                {% endif %}
+            -->
+
+                <tr class=tr.logs>
+                    <td>
+                            <a href="{% url 'logdetailview' starter_id=log.starter.id %}"> {{ log.starter }}</a>
+                    </td>
+                    <td>
+                        {{ log.starter.lane }}
+                    </td>
+                    <td>
+                        {{ log.log.gettimestr }}
+                    </td>
+                    <td style="text-align: right;">
+                        {{ log.log.since }}
+                    </td>
+                    <td>
+                        {% if log.new_Log_possible %}
+                            <a href="{% url 'add_log' starter_id=log.starter.id %}">
+                            <button type="button" style="height:32px;width:96px">
+                                {{ log.starter.startnumber }} Log! </td>
+                            </button></a>
+                        {% else %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'take_a_break' starter_id=log.starter.id %}"> 
+                        <button type="button" style="height:32px;width:96px">
+                            {{ log.starter.startnumber }} Pause! </td>
+                        </button></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+no Logs
+{% endif %}

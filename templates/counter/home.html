@@ -3,30 +3,11 @@
 Home
 {% endblock %}
 {% block content %}
-<p>Übersicht letzte Logs Starter</p>
-<h2>Logs</h2>
 
-{% if log_list %}
-    <div id="activestartertable">
-    </div>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
-    <script>
-        setInterval(function(){
-        $.ajax({
-        url: '{% url 'asyncview' %}',
-        success: function(data) {
-            if ($.trim(data)){
-                // printWindow = window.open('');
-                // printWindow.document.write(data);
-                // printWindow.print();
-                $('#activestartertable').html(data);
-                }
-            }
-      })}, 500); // Refresh the content every 0.5 seconds;
-    </script>
-
-{% else %}
-    <p>No messages have been logged.</a></p>
-{% endif %}
+<h1>Wellcome</h1>
+<h2>Counter for 24 hours of swimming race </h2>
+<p>Starter : shows all starter not yet in race</p>
+<p>Counter : count lanes</p>
+<p>Result  : shows how many laps each starter swam</p>
 
 {% endblock %}

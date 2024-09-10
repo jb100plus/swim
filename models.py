@@ -25,9 +25,10 @@ class STATE(models.IntegerChoices):
 @forDjango
 class STATE(models.IntegerChoices):
     SWIM = 10, 'swimming'
-    OUT = 20, 'out'
-    GONE = 30, 'gone'
-    DONE = 40, 'done'
+    IN = 20, 'in'
+    OUT = 30, 'out'
+    GONE = 40, 'gone'
+    DONE = 50, 'done'
 
 
 class Starter(models.Model):
@@ -40,16 +41,19 @@ class Starter(models.Model):
     def __str__(self):
         return f"{self.startnumber} {self.firstname} {self.lastname}"
 
-def validate_time(self, value):
-    print(value)
-    print(int(value.logtimestamp - self.instance.starter.lastlog.log.logtimestamp).total_seconds())
-    if int(value.logtimestamp - self.instance.starter.lastlog.log.logtimestamp).total_seconds() < 20:
+# not uses anymore, but can't be deleted it seems to resist in a migration
+def validate_time(value):
+    if ((value.logtimestamp - value.starter.lastlog.log.logtimestamp).total_seconds()) < 8:
         raise ValidationError("To Fast!!!!!", params={"value": value},)
-    return value
+        return False
+    return True
+
 
 class Log(models.Model):
-    logtimestamp = models.DateTimeField("timestamp logged", auto_now_add=True, validators=[validate_time])
+    #logtimestamp = models.DateTimeField("timestamp logged", auto_now_add=True, validators=[validate_time,])
+    logtimestamp = models.DateTimeField("timestamp logged", auto_now_add=True)
     starter = models.ForeignKey(Starter, on_delete=models.CASCADE)
+    kind = models.IntegerField(choices=STATE.choices, default='10', verbose_name='state')
     
     def __str__(self):
         """Returns a string representation of a message."""
@@ -62,7 +66,7 @@ class Log(models.Model):
     
     def since(self):
         return int((timezone.now() - timezone.localtime(self.logtimestamp)).total_seconds())
-  
+
 
 class LastLog(models.Model):
     log = models.ForeignKey(Log, on_delete=models.CASCADE)
@@ -72,6 +76,52 @@ class LastLog(models.Model):
         """Returns a string representation of a log."""
         return f"'{str(self.starter)}' logged on { str(self.log)}"
 
+    def new_Log_possible(self):
+        return self.log.since() > 5
+
+
+def getresult():
+    return Log.objects.values('starter__id', 'starter__firstname', 'starter__lastname').filter(kind=STATE.SWIM).annotate(count=Count('logtimestamp')).order_by('-count')
+
+
+def add_log_kind(starter, kind):
+    try:
+        lastlog = LastLog.objects.get(starter=starter)
+        if lastlog.new_Log_possible():        
+            log = Log.objects.create(starter=starter)
+            log.kind = kind
+            log.save()
+            lastlog.log = log
+            lastlog.save()
+    # first log for starter
+    except:
+        log = Log.objects.create(starter=starter)
+        log.save()
+        lastlog = LastLog.objects.create(starter=starter, log=log)
+        lastlog.save()
+    starter.state=kind
+    starter.save()
+
+
+def add_log(starter_id):
+    starter = Starter.objects.get(pk = starter_id)
+    add_log_kind(starter=starter, kind=STATE.SWIM)
+
+
+def take_a_break(starter_id):
+    starter = Starter.objects.get(pk = starter_id)
+    starter.state=STATE.OUT
+    starter.save()
+    add_log_kind(starter, STATE.OUT)
+    
+
+def back_to_swim(starter_id, lane):
+    starter = Starter.objects.get(pk = starter_id)
+    starter.state=STATE.SWIM
+    starter.lane = lane
+    starter.save()
+    add_log_kind(starter, STATE.IN)
+
 
 class ListHash(models.Model):
     hash = models.CharField(max_length=16)
@@ -79,9 +129,3 @@ class ListHash(models.Model):
     def __str__(self):
         """Returns a string representation of a hash."""
         return f"'{str(self.hash)}'"
-
-
-def getresult():
-    return Log.objects.values('starter__id', 'starter__firstname', 'starter__lastname').annotate(count=Count('logtimestamp')).order_by('-count')
-
-

@@ -1,0 +1,48 @@
+{% extends "counter/layout.html" %}
+{% block title %}
+Home
+{% endblock %}
+{% block content %}
+<h1>Übersicht letzte Logs Starter</h1>
+
+    <div id="activestartertable">
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        myfunc = function()
+            {
+            $.ajax({
+            url: '{% url 'loglist' %}',
+            // get data from 'loglist'
+            success: function(data) {
+                if ($.trim(data)){
+                    $('#activestartertable').html(data);
+                    }
+                }
+        })};
+        // Refresh the content every 5 seconds;
+        // setInterval(myfunc, 5000)
+        // get data after page loaded
+        $(document).ready(myfunc)
+
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/counter/'
+        );
+    
+        chatSocket.onmessage = function(e) {
+            myfunc();
+            const data = JSON.parse(e.data);
+            console.log(data)
+            //window.location.reload()
+        };
+    
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+    </script>
+
+
+
+{% endblock %}
