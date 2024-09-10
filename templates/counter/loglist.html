@@ -33,18 +33,18 @@
                     </td>
                     <td>
                         {% if log.new_Log_possible %}
-                            <a href="{% url 'add_log' starter_id=log.starter.id %}">
-                            <button type="button" style="height:32px;width:96px">
-                                {{ log.starter.startnumber }} Log! </td>
-                            </button></a>
+                            <a href="{% url 'add_log' starter_id=log.starter.id %}" class="button">
+                                {{ log.starter.startnumber }} Log!
+                            </a>
                         {% else %}
                         {% endif %}
                     </td>
                     <td>
                         <a href="{% url 'take_a_break' starter_id=log.starter.id %}"> 
-                        <button type="button" style="height:32px;width:96px">
-                            {{ log.starter.startnumber }} Pause! </td>
-                        </button></a>
+                        <button type="button" class="mybutton">
+                            {{ log.starter.startnumber }} Pause!
+                        </button>
+                        </a>
                     </td>
                 </tr>
             {% endfor %}

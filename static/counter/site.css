@@ -58,6 +58,12 @@ td.container {
 tr.logs { height: 999px; }
 
 
+.mybutton{
+    height:32px;
+    width:96px;
+}
+
+
 .button-28 {
   appearance: none;
   background-color: transparent;
@@ -67,12 +73,12 @@ tr.logs { height: 999px; }
   color: #3B3B3B;
   cursor: pointer;
   display: inline-block;
-  /*font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   font-size: 16px;
-  font-weight: 600;*/
+  font-weight: 600;
   line-height: normal;
   margin: 0;
-  min-height: 60px;
+  min-height: 42px;
   min-width: 0;
   outline: none;
   padding: 16px 24px;
@@ -100,4 +106,15 @@ tr.logs { height: 999px; }
 .button-28:active {
   box-shadow: none;
   transform: translateY(0);
+}
+
+a.button{
+  background-color: #199319;
+  border-radius: 5px;
+  color: white;
+  line-height: normal;
+}
+
+a.button:hover {
+  background-color: #223094;
 }

@@ -19,16 +19,16 @@ Home
                     <td><a href="{% url 'logdetailview' starter_id=starter.id %}"> {{ starter }}</a>
                     </td>
                     <td>
-                        <a href="{% url 'back_to_swim' starter_id=starter.id lane=1 %}" class="button-28">To the race Lane 1</a>
-                    </td>  
+                        <a href="{% url 'back_to_swim' starter_id=starter.id lane=1 %}" class="button-28">Lane 1</a>
+                    </td>
                     <td>
-                        <a href="{% url 'back_to_swim' starter_id=starter.id lane=2 %}" class="button-28">To the race Lane 2</a>
-                    </td>  
+                        <a href="{% url 'back_to_swim' starter_id=starter.id lane=2 %}" class="button-28">Lane 2</a>
+                    </td>
                     <td>
-                        <a href="{% url 'back_to_swim' starter_id=starter.id lane=3 %}" class="button-28">To the race Lane 3</a>
-                    </td>  
+                        <a href="{% url 'back_to_swim' starter_id=starter.id lane=3 %}" class="button-28">Lane 3</a>
+                    </td>
                     <td>
-                        <a href="{% url 'back_to_swim' starter_id=starter.id lane=4 %}" class="button-28">To the race Lane 4</a>
+                        <a href="{% url 'back_to_swim' starter_id=starter.id lane=4 %}" class="button-28">Lane 4</a>
                     </td>                
                 </tr>
             {% endfor %}
