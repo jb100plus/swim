@@ -5,7 +5,7 @@ fürs 24 h Schwimmen
 immer als normaler Benutzer ausführen,
 wenn sudo, landen die schlüssel nicht an der richtigen Stelle -> dann immer sudo :-(
 
-* ssh-keygen -t ed25519 -C "jb.100plus@gmx.de"
+* ssh-keygen -t ed25519 -C "jb.100plus..."
 * eval "$(ssh-agent -s)"
 * ssh-add ~/.ssh/gh240910
 * ssh -T git@ssh.github.com -p 443
