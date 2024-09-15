@@ -4,11 +4,6 @@
    }
    
 
-.message {
-    font-weight: 600;
-    color: blue;
-}
-
 .navbar {
     background-color: lightslategray;
     font-size: 1em;
@@ -55,7 +50,7 @@ td.container {
     height: 150px;
 }
 
-tr.logs { height: 999px; }
+tr.logs { height: 42px; }
 
 
 .mybutton{
@@ -68,7 +63,7 @@ tr.logs { height: 999px; }
   appearance: none;
   background-color: transparent;
   border: 2px solid #1A1A1A;
-  border-radius: 15px;
+  border-radius: 5px;
   box-sizing: border-box;
   color: #3B3B3B;
   cursor: pointer;
@@ -78,11 +73,11 @@ tr.logs { height: 999px; }
   font-weight: 600;
   line-height: normal;
   margin: 0;
-  min-height: 42px;
-  min-width: 0;
+  height: 36px;
+  min-width: 2%;
   outline: none;
-  padding: 16px 24px;
   text-align: center;
+  vertical-align: middle;
   text-decoration: none;
   transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
   user-select: none;
@@ -108,13 +103,28 @@ tr.logs { height: 999px; }
   transform: translateY(0);
 }
 
-a.button{
+a.buttongreen{
   background-color: #199319;
-  border-radius: 5px;
+  border-radius: 2px;
   color: white;
   line-height: normal;
+  height: auto;
+  width: auto;
+}
+a.buttonred{
+  background-color: #c43b3b;
+  border-radius: 2px;
+  color: black;
+  line-height: normal;
+  height: 300px;
+  width: auto;
+  border: none;
 }
 
-a.button:hover {
-  background-color: #223094;
+a.buttongreen:hover {
+  background-color: #bebebe;
+}
+
+a.buttonred:hover {
+  background-color: #bebebe;
 }

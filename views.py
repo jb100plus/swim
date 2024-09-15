@@ -22,7 +22,7 @@ def check():
 # Function to run every 3 seconds
 if scheduler is None:
     scheduler = BackgroundScheduler()
-    scheduler.add_job(check, 'cron', second='*/30')
+    scheduler.add_job(check, 'cron', second='*/3')
     scheduler.start()
 
 
@@ -40,17 +40,10 @@ class CountListView(ListView):
         context = super(CountListView, self).get_context_data(**kwargs)
         return context
 
-'''
-# outer html for the count view
-count_list_view = CountListView.as_view(
-    context_object_name="log_list",
-    template_name="counter/wscount.html",
-    )
-'''
+
 # outer html for the count view
 def count_list_view(request):
     return render(request, "counter/wscount.html")
-
 
 
 # inner html fot the count_list_view

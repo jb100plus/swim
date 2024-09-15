@@ -22,7 +22,7 @@ class STATE(models.IntegerChoices):
     DONE = 40, gettext('done')
 '''
 
-@forDjango
+###@forDjango
 class STATE(models.IntegerChoices):
     SWIM = 10, 'swimming'
     IN = 20, 'in'
@@ -41,6 +41,8 @@ class Starter(models.Model):
     def __str__(self):
         return f"{self.startnumber} {self.firstname} {self.lastname}"
 
+
+
 # not uses anymore, but can't be deleted it seems to resist in a migration
 def validate_time(value):
     if ((value.logtimestamp - value.starter.lastlog.log.logtimestamp).total_seconds()) < 8:
@@ -58,11 +60,11 @@ class Log(models.Model):
     def __str__(self):
         """Returns a string representation of a message."""
         logtimestamp = timezone.localtime(self.logtimestamp)
-        return f"'{self.starter.startnumber}' logged on {logtimestamp.strftime('%A, %d %B, %Y at %X')}"
+        return f"{self.starter.startnumber} logged on {logtimestamp.strftime('%A, %d %B, %Y at %X')}"
     
     def gettimestr(self):
         dt = timezone.localtime(self.logtimestamp)
-        return f"{dt:%Y.%m.%d %H:%M:%S}.{dt.microsecond // 100000:01d}"
+        return f"{dt:%Y.%m.%d %H:%M:%S}.{dt.microsecond // 100000:01d} kind {self.kind}"
     
     def since(self):
         return int((timezone.now() - timezone.localtime(self.logtimestamp)).total_seconds())
@@ -122,10 +124,3 @@ def back_to_swim(starter_id, lane):
     starter.save()
     add_log_kind(starter, STATE.IN)
 
-
-class ListHash(models.Model):
-    hash = models.CharField(max_length=16)
-    
-    def __str__(self):
-        """Returns a string representation of a hash."""
-        return f"'{str(self.hash)}'"

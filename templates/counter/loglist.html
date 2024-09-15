@@ -18,7 +18,7 @@
                 {% endif %}
             -->
 
-                <tr class=tr.logs>
+                <tr class=logs>
                     <td>
                             <a href="{% url 'logdetailview' starter_id=log.starter.id %}"> {{ log.starter }}</a>
                     </td>
@@ -33,17 +33,15 @@
                     </td>
                     <td>
                         {% if log.new_Log_possible %}
-                            <a href="{% url 'add_log' starter_id=log.starter.id %}" class="button">
+                            <a href="{% url 'add_log' starter_id=log.starter.id %}" class="buttongreen">
                                 {{ log.starter.startnumber }} Log!
                             </a>
                         {% else %}
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{% url 'take_a_break' starter_id=log.starter.id %}"> 
-                        <button type="button" class="mybutton">
+                        <a href="{% url 'take_a_break' starter_id=log.starter.id %}" class="buttonred"> 
                             {{ log.starter.startnumber }} Pause!
-                        </button>
                         </a>
                     </td>
                 </tr>
