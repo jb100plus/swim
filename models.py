@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.db.models import Count
 from django.utils.translation import gettext
 from django.core.exceptions import ValidationError
+from datetime import time
 
 
 
@@ -64,7 +65,7 @@ class Log(models.Model):
     
     def gettimestr(self):
         dt = timezone.localtime(self.logtimestamp)
-        return f"{dt:%Y.%m.%d %H:%M:%S}.{dt.microsecond // 100000:01d} kind {self.kind}"
+        return f"{dt:%Y.%m.%d %H:%M:%S}.{dt.microsecond // 100000:01d}"
     
     def since(self):
         return int((timezone.now() - timezone.localtime(self.logtimestamp)).total_seconds())

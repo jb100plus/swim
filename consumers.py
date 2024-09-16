@@ -1,4 +1,3 @@
-# chat/consumers.py
 import json
 from django.core import serializers
 from asgiref.sync import async_to_sync
@@ -6,7 +5,7 @@ from channels.generic.websocket import WebsocketConsumer
 from datetime import datetime
 
 
-class ChatConsumer(WebsocketConsumer):
+class CountConsumer(WebsocketConsumer):
     def connect(self):
         self.room_name  = "counter"
         self.room_group_name = "countergroup"
@@ -31,12 +30,12 @@ class ChatConsumer(WebsocketConsumer):
         print(message)
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name, {"type": "chat.message", "message": 'dummy'}
+            self.room_group_name, {"type": "count.message", "message": 'dummy'}
         )
 
 
     # Receive message from room group
-    def chat_message(self, event):
+    def count_message(self, event):
         # print('Receive message from room group')
         message = event["message"]
         # Send message to WebSocket

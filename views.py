@@ -16,7 +16,7 @@ current_loglist = None
 scheduler = None
 def check():
     layer = get_channel_layer()
-    async_to_sync(layer.group_send)("countergroup", {'type': 'chat.message', 'message': 'dummy'})
+    async_to_sync(layer.group_send)("countergroup", {'type': 'count.message', 'message': 'dummy'})
 
 
 # Function to run every 3 seconds
@@ -85,7 +85,7 @@ def add_log(request, starter_id):
     global current_loglist
     current_loglist = None
     layer = get_channel_layer()
-    async_to_sync(layer.group_send)("countergroup", {'type': 'chat.message', 'message': 'dummy'})
+    async_to_sync(layer.group_send)("countergroup", {'type': 'count.message', 'message': 'dummy'})
     return redirect('count')
 
 
@@ -116,7 +116,7 @@ def take_a_break(request, starter_id):
     global current_loglist
     current_loglist = None
     layer = get_channel_layer()
-    async_to_sync(layer.group_send)("countergroup", {'type': 'chat.message', 'message': 'dummy'})
+    async_to_sync(layer.group_send)("countergroup", {'type': 'count.message', 'message': 'dummy'})
     return redirect('count')
 
 
@@ -125,5 +125,5 @@ def back_to_swim(request, starter_id, lane):
     global current_loglist
     current_loglist = None
     layer = get_channel_layer()
-    async_to_sync(layer.group_send)("countergroup", {'type': 'chat.message', 'message': 'dummy'})
+    async_to_sync(layer.group_send)("countergroup", {'type': 'count.message', 'message': 'dummy'})
     return redirect('start')

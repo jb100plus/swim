@@ -25,21 +25,21 @@ Home
         // get data after page loaded
         $(document).ready(myfunc)
 
-        const chatSocket = new WebSocket(
+        const countSocket = new WebSocket(
             'ws://'
             + window.location.host
             + '/counter/'
         );
     
-        chatSocket.onmessage = function(e) {
+        countSocket.onmessage = function(e) {
             myfunc();
             const data = JSON.parse(e.data);
             console.log(data)
             //window.location.reload()
         };
     
-        chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
+        countSocket.onclose = function(e) {
+            console.error('Count socket closed unexpectedly');
         };
     </script>
 
