@@ -103,22 +103,85 @@ tr.logs { height: 42px; }
   transform: translateY(0);
 }
 
-a.buttongreen{
-  background-color: #199319;
-  border-radius: 2px;
-  color: white;
-  line-height: normal;
-  height: auto;
-  width: auto;
-}
-a.buttonred{
-  background-color: #c43b3b;
-  border-radius: 2px;
-  color: black;
-  line-height: normal;
-  height: 300px;
-  width: auto;
+a.buttonblue1 {
+  background-color: #666699; /* blue */
   border: none;
+  color: white;
+  padding: 5px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border: 2px solid #1A1A1A;
+  border-radius: 5px;
+}
+
+a.buttonblue2 {
+  background-color: #6666bb; /* blue */
+  border: none;
+  color: white;
+  padding: 5px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border: 2px solid #1A1A1A;
+  border-radius: 5px;
+}
+
+a.buttonblue3 {
+  background-color: #6666dd; /* blue */
+  border: none;
+  color: white;
+  padding: 5px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border: 2px solid #1A1A1A;
+  border-radius: 5px;
+}
+
+a.buttonblue4 {
+  background-color: #6666ff; /* blue */
+  border: none;
+  color: white;
+  padding: 5px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border: 2px solid #1A1A1A;
+  border-radius: 5px;
+}
+
+
+
+a.buttongreen {
+  background-color: #04AA6D; /* Green */
+  border: none;
+  color: white;
+  padding: 5px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border: 2px solid #1A1A1A;
+  border-radius: 5px;
+}
+
+
+a.buttonred {
+  background-color: #A01010; /* red */
+  border: none;
+  color: white;
+  padding: 5px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border: 2px solid #1A1A1A;
+  border-radius: 5px;
 }
 
 a.buttongreen:hover {
@@ -128,3 +191,4 @@ a.buttongreen:hover {
 a.buttonred:hover {
   background-color: #bebebe;
 }
+
