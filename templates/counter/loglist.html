@@ -12,12 +12,6 @@
         </thead>
         <tbody>
             {% for log in log_list %}
-            <!--{% if log.starter.lane == 4 %}-->
-            <!--
-                {% else %}
-                {% endif %}
-            -->
-
                 <tr class=logs>
                     <td>
                             <a href="{% url 'logdetailview' starter_id=log.starter.id %}"> {{ log.starter }}</a>
