@@ -5,11 +5,10 @@ Home
 {% block content %}
 <h1>Übersicht letzte Logs Starter</h1>
 
-    <div id="activestartertable">
-    </div>
+    <div id="activestartertable"></div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
-        myfunc = function()
+        reloadLoglist = function()
             {
             $.ajax({
             url: '{% url 'loglist' %}',
@@ -21,9 +20,9 @@ Home
                 }
         })};
         // Refresh the content every 5 seconds;
-        // setInterval(myfunc, 5000)
+        // setInterval(reloadLoglist, 5000)
         // get data after page loaded
-        $(document).ready(myfunc)
+        $(document).ready(reloadLoglist)
 
         const countSocket = new WebSocket(
             'ws://'
@@ -32,7 +31,7 @@ Home
         );
     
         countSocket.onmessage = function(e) {
-            myfunc();
+            reloadLoglist();
             const data = JSON.parse(e.data);
             console.log(data)
             //window.location.reload()
@@ -41,8 +40,15 @@ Home
         countSocket.onclose = function(e) {
             console.error('Count socket closed unexpectedly');
         };
+
+        addLog = function(e) {
+            console.log(e.value)
+            message = e.value + "," + e.id;
+            countSocket.send(JSON.stringify({
+                'message': message
+            }));
+        };
+        
+
     </script>
-
-
-
 {% endblock %}

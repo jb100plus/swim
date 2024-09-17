@@ -26,17 +26,17 @@
                         {{ log.log.since }}
                     </td>
                     <td>
-                        {% if log.new_Log_possible %}
-                            <a href="{% url 'add_log' starter_id=log.starter.id %}" class="buttongreen">
-                                {{ log.starter.startnumber }} Log!
-                            </a>
+                        {% if log.new_Log_possible %}                         
+                        <button type="button" class="buttongreen" onclick="addLog(this)" id="{{ log.starter.id }}" value="addlog">
+                            {{ log.starter.startnumber }} Log!
+                        </button>
                         {% else %}
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{% url 'take_a_break' starter_id=log.starter.id %}" class="buttonred"> 
+                        <button type="button" class="buttonred" onclick="addLog(this)" id="{{ log.starter.id }}" value="take_a_break">
                             {{ log.starter.startnumber }} Pause!
-                        </a>
+                        </button>
                     </td>
                 </tr>
             {% endfor %}

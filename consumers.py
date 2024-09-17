@@ -3,6 +3,7 @@ from django.core import serializers
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from datetime import datetime
+from counter import views
 
 
 class CountConsumer(WebsocketConsumer):
@@ -24,14 +25,20 @@ class CountConsumer(WebsocketConsumer):
 
     # Receive message from WebSocket
     def receive(self, text_data):
-        print('Receive message from WebSocket')
+        #print('Receive message from WebSocket')
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
-        print(message)
+        a,i = message.split(',')
+        print(a)
+        if 'addlog' == a:
+            async_to_sync(views.add_log(None, int(i)))
+        if 'take_a_break' == a:
+            views.take_a_break(None, int(i))
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name, {"type": "count.message", "message": 'dummy'}
         )
+        print('gesendet')
 
 
     # Receive message from room group

@@ -96,8 +96,10 @@ def add_log_kind(starter, kind):
             log.save()
             lastlog.log = log
             lastlog.save()
+            print(lastlog)
     # first log for starter
-    except:
+    except Exception as ex:
+        print(ex)
         log = Log.objects.create(starter=starter)
         log.save()
         lastlog = LastLog.objects.create(starter=starter, log=log)

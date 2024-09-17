@@ -51,7 +51,7 @@ def loglist(request):
     global current_loglist
     if current_loglist is None:
         current_loglist = LastLog.objects.filter(starter__state__in=[STATE.SWIM, STATE.IN]).order_by('log')
-    # render every call because timers
+    # render every call because timers calculated in html
     return render(request, "counter/loglist.html", {'log_list': current_loglist})
 
 

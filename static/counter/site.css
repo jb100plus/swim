@@ -3,7 +3,6 @@
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
    }
    
-
 .navbar {
     background-color: lightslategray;
     font-size: 1em;
@@ -51,57 +50,6 @@ td.container {
 }
 
 tr.logs { height: 42px; }
-
-
-.mybutton{
-    height:32px;
-    width:96px;
-}
-
-
-.button-28 {
-  appearance: none;
-  background-color: transparent;
-  border: 2px solid #1A1A1A;
-  border-radius: 5px;
-  box-sizing: border-box;
-  color: #3B3B3B;
-  cursor: pointer;
-  display: inline-block;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: normal;
-  margin: 0;
-  height: 36px;
-  min-width: 2%;
-  outline: none;
-  text-align: center;
-  vertical-align: middle;
-  text-decoration: none;
-  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  width: 100%;
-  will-change: transform;
-}
-
-.button-28:disabled {
-  pointer-events: none;
-}
-
-.button-28:hover {
-  color: #fff;
-  background-color: #1A1A1A;
-  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
-  transform: translateY(-2px);
-}
-
-.button-28:active {
-  box-shadow: none;
-  transform: translateY(0);
-}
 
 a.buttonblue1 {
   background-color: #666699; /* blue */
@@ -156,8 +104,7 @@ a.buttonblue4 {
 }
 
 
-
-a.buttongreen {
+.buttongreen {
   background-color: #04AA6D; /* Green */
   border: none;
   color: white;
@@ -170,8 +117,11 @@ a.buttongreen {
   border-radius: 5px;
 }
 
+.buttongreen:hover {
+  background-color: #bebebe;
+}
 
-a.buttonred {
+.buttonred {
   background-color: #A01010; /* red */
   border: none;
   color: white;
@@ -184,11 +134,7 @@ a.buttonred {
   border-radius: 5px;
 }
 
-a.buttongreen:hover {
-  background-color: #bebebe;
-}
-
-a.buttonred:hover {
+.buttonred:hover {
   background-color: #bebebe;
 }
 
