@@ -12,16 +12,18 @@ ASGI_APPLICATION = "mysite.asgi.application"
 
 python3 -m pip install channels_redis
 
+
+asgi.py: 
 asgi.py:
-
 import os
-
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.security.websocket import AllowedHostsOriginValidator
 from django.core.asgi import get_asgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
+# Initialize Django ASGI application early to ensure the AppRegistry
+# is populated before importing code that may import ORM models.
 django_asgi_app = get_asgi_application()
 
 from counter.routing import websocket_urlpatterns
@@ -34,3 +36,10 @@ application = ProtocolTypeRouter(
         ),
     }
 )
+
+python manage.py createsuperuser
+python manage.py makemigrations counter
+python manage.py migrate
+
+docker run --rm -p 6379:6379 redis:7
+
