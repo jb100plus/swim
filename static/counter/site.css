@@ -1,58 +1,58 @@
 * {
-    /* font-size: 100%; */
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-   }
-   
+  /* font-size: 100%; */
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans';
+ }
+
+.counterh1{
+  font-size: larger;
+  text-align: center;
+}
+/* The navigation bar */
 .navbar {
-    background-color: lightslategray;
-    font-size: 1em;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    color: white;
-    padding: 8px 5px 8px 5px;
+  overflow: hidden;
+  background-color: lightslategray;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
 }
 
+/* Links inside the navbar */
 .navbar a {
-    text-decoration: none;
-    color: inherit;
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
 }
 
-.navbar-brand {
-    font-size: 1.2em;
-    font-weight: 600;
+/* Change background on mouse-over */
+.navbar a:hover {
+  background: #ddd;
+  color: black;
 }
 
-.navbar-item {
-    font-variant: small-caps;
-    margin-left: 30px;
+/* The navigation bar */
+.navbottombar {
+  overflow: hidden;
+  background-color: white; /* don't work without a color!!!*/
+  position: fixed; /* Set the navbar to fixed position */
+  bottom: 0; 
+  width: 100%; /* Full width */
+  font-size: 10px;
+  text-align: center;
+  height: 30px;
 }
 
-.body-content {
-    padding: 5px;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+/* Main content */
+.main {
+  margin-top: 50px; /* Add a top margin to avoid content overlay */
+  margin-bottom: 50px;/* Add a bottom margin to avoid content overlay */
 }
 
-input[name=message] {
-    width: 80%;
-}
-
-.message_list th,td {
-    text-align: left;
-    padding-right: 15px;
-}
-
-td.container > div {
-    width: 100%;
-    height: 100%;
-    overflow:hidden;
-}
-td.container {
-    height: 150px;
-}
-
-tr.logs { height: 42px; }
-
-a.buttonblue1 {
-  background-color: #666699; /* blue */
+.buttonblue1 {
+  background-color: #666699;
   border: none;
   color: white;
   padding: 5px 32px;
@@ -64,8 +64,8 @@ a.buttonblue1 {
   border-radius: 5px;
 }
 
-a.buttonblue2 {
-  background-color: #6666bb; /* blue */
+.buttonblue2 {
+  background-color: #6666bb;
   border: none;
   color: white;
   padding: 5px 32px;
@@ -77,7 +77,7 @@ a.buttonblue2 {
   border-radius: 5px;
 }
 
-a.buttonblue3 {
+.buttonblue3 {
   background-color: #6666dd; /* blue */
   border: none;
   color: white;
@@ -90,7 +90,7 @@ a.buttonblue3 {
   border-radius: 5px;
 }
 
-a.buttonblue4 {
+.buttonblue4 {
   background-color: #6666ff; /* blue */
   border: none;
   color: white;
@@ -116,11 +116,11 @@ a.buttonblue4 {
   border: 2px solid #1A1A1A;
   border-radius: 5px;
 }
-
+/*
 .buttongreen:hover {
   background-color: #bebebe;
 }
-
+*/
 .buttonred {
   background-color: #A01010; /* red */
   border: none;
@@ -133,8 +133,8 @@ a.buttonblue4 {
   border: 2px solid #1A1A1A;
   border-radius: 5px;
 }
-
+/*
 .buttonred:hover {
   background-color: #bebebe;
 }
-
+*/

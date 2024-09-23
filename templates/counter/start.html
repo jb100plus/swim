@@ -3,40 +3,51 @@
 Home
 {% endblock %}
 {% block content %}
-<h1>Starter</h1>
-<h2>overview of starters not in the race</h2>
-{% if starter_list %}
-    <table class="starter_list">
-        <thead>
-        <tr>
-            <th>Starter</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-            {% for starter in starter_list %}
-                <tr>
-                    <td><a href="{% url 'logdetailview' starter_id=starter.id %}"> {{ starter }}</a>
-                    </td>
-                    <td>
-                        <a href="{% url 'back_to_swim' starter_id=starter.id lane=1 %}" class="buttonblue1">Lane 1</a>
-                    </td>
-                    <td>
-                        <a href="{% url 'back_to_swim' starter_id=starter.id lane=2 %}" class="buttonblue2">Lane 2</a>
-                    </td>
-                    <td>
-                        <a href="{% url 'back_to_swim' starter_id=starter.id lane=3 %}" class="buttonblue3">Lane 3</a>
-                    </td>
-                    <td>
-                        <a href="{% url 'back_to_swim' starter_id=starter.id lane=4 %}" class="buttonblue4">Lane 4</a>
-                    </td>                
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-    <p>All starter are in the race.</a></p>
-{% endif %}
+<h1 class="counterh1">starters currently not in the race</h1>
+<div id="startertable"></div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+    reloadStartlist = function()
+        {
+        $.ajax({
+        url: '{% url 'startlist' %}',
+        // get data from 'startlist'
+        success: function(data) {
+            if ($.trim(data)){
+                $('#startertable').html(data);
+                }
+            }
+    })};
+
+    $(document).ready(reloadStartlist)
+    
+    const startSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/counter/'
+    );
+
+    startSocket.onmessage = function(e) {
+        reloadStartlist();
+        const data = JSON.parse(e.data);
+        console.log(data)
+        //window.location.reload()
+    };
+
+    startSocket.onclose = function(e) {
+        console.error('Count socket closed unexpectedly');
+    };
+
+    addLog = function(e) {
+        console.log(e.value)
+        message = e.value + "," + e.id;
+        startSocket.send(JSON.stringify({
+            'message': message
+        }));
+    };
+    
+
+</script>
 
 {% endblock %}
 

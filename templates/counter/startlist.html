@@ -1,0 +1,42 @@
+{% if startlist %}
+    <table>
+        <thead>
+        <tr>
+            <th>Starter</th>
+            <th colspan="4">Lane</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for starter in startlist %}
+                <tr>
+                    <td>
+                        <a href="{% url 'logdetailview' starter_id=starter.id %}"> {{ starter }}</a>                      
+                    <td>
+                        <button type="button" class="buttonblue1" onclick="addLog(this)" id="{{ starter.id }}" value=lane:1>
+                            Lane 1
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="buttonblue2" onclick="addLog(this)" id="{{ starter.id }}" value=lane:2>
+                            Lane 2
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="buttonblue3" onclick="addLog(this)" id="{{ starter.id }}" value=lane:3>
+                            Lane 3
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="buttonblue4" onclick="addLog(this)" id="{{ starter.id }}" value=lane:4>
+                            Lane 4
+                        </button>
+                    </td>                
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>All starter are in the race.</a></p>
+{% endif %}
+
+

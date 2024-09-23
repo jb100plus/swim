@@ -11,6 +11,7 @@ from asgiref.sync import async_to_sync
 
 
 current_loglist = None
+current_startlist = None
 
 # executet on start or reload
 scheduler = None
@@ -30,17 +31,6 @@ def home_list_view(request):
     return render(request, "counter/home.html")
 
 
-# Create your views here.
-class CountListView(ListView):
-    """Renders the home page, with a list of all messages."""
-    model = LastLog
-    ordering = ['log']
-
-    def get_context_data(self, **kwargs):
-        context = super(CountListView, self).get_context_data(**kwargs)
-        return context
-
-
 # outer html for the count view
 def count_list_view(request):
     return render(request, "counter/wscount.html")
@@ -53,6 +43,20 @@ def loglist(request):
         current_loglist = LastLog.objects.filter(starter__state__in=[STATE.SWIM, STATE.IN]).order_by('log')
     # render every call because timers calculated in html
     return render(request, "counter/loglist.html", {'log_list': current_loglist})
+
+
+# outer html for the start view
+def start_list_view(request):
+    return render(request, "counter/start.html")
+
+
+# inner html fot the start view
+def startlist(request):
+    global current_startlist
+    if current_startlist is None:
+        current_startlist = Starter.objects.exclude(state__in=[STATE.SWIM, STATE.IN]).order_by('startnumber')
+    return render(request, "counter/startlist.html", {'startlist': current_startlist})
+
 
 
 class StarterLogListView(ListView):
@@ -79,42 +83,22 @@ def about(request):
 def contact(request):
     return render(request, "counter/contact.html")
 
-
+# TODO: remove parameter request, it is not needed when using messages
 def add_log(request, starter_id):
     models.add_log(starter_id)
     global current_loglist
     current_loglist = None
     layer = get_channel_layer()
     async_to_sync(layer.group_send)("countergroup", {'type': 'count.message', 'message': 'dummy'})
-    return redirect('count')
-
-
-class StartListView(ListView):
-    """Renders the home page, with a list of all starters not in the race."""
-    model = Starter
-    ordering = ['startnumber']
-
-    def get_context_data(self, **kwargs):
-        context = super(StartListView, self).get_context_data(**kwargs)
-        return context
-    
-    # show only starter with no logs (i.e. who are not yet in the race)
-    def get_queryset(self, **kwargs):
-        qs = super().get_queryset(**kwargs)
-        # return qs.filter(lastlog=None)
-        return qs.filter(state=STATE.OUT)
-
-
-start_list_view = StartListView.as_view(
-    context_object_name="starter_list",
-    template_name="counter/start.html",
-    )
+    #return redirect('count')
 
 
 def take_a_break(request, starter_id):
     models.take_a_break(starter_id)
     global current_loglist
     current_loglist = None
+    global current_startlist
+    current_startlist = None
     layer = get_channel_layer()
     async_to_sync(layer.group_send)("countergroup", {'type': 'count.message', 'message': 'dummy'})
     return redirect('count')
@@ -124,6 +108,8 @@ def back_to_swim(request, starter_id, lane):
     models.back_to_swim(starter_id, lane)
     global current_loglist
     current_loglist = None
+    global current_startlist
+    current_startlist = None
     layer = get_channel_layer()
     async_to_sync(layer.group_send)("countergroup", {'type': 'count.message', 'message': 'dummy'})
     return redirect('start')
