@@ -1,0 +1,24 @@
+<form name="selectlanes" onsubmit="reloadLoglist" >
+<input type="checkbox" name="example" value=1> lane 1
+<input type="checkbox" name="example" value=2> lane 2
+<input type="checkbox" name="example" value=3> lane 3
+<input type="checkbox" name="example" value=4> lane 4
+<input type="submit" value="Submit">
+{{ lanes }}
+
+# outer html for the count view
+def count_list_view(request):
+    laneslist = request.GET.getlist('example')
+    lanes = ','.join(laneslist)
+    return render(request, "counter/wscount.html",{'lanes':lanes})
+
+
+# inner html fot the count_list_view
+def loglist_lane(request, lanes):
+    print(lanes)
+    global current_loglist
+    if current_loglist is None:
+        current_loglist = LastLog.objects.filter(starter__state__in=[STATE.SWIM, STATE.IN]).order_by('log')
+    # render every call because timers calculated in html
+    return render(request, "counter/loglist.html", {'log_list': current_loglist})
+
