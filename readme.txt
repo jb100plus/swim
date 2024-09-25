@@ -15,7 +15,6 @@ ASGI_APPLICATION = "mysite.asgi.application"
 python3 -m pip install channels_redis
 
 
-asgi.py: 
 asgi.py:
 import os
 from channels.auth import AuthMiddlewareStack

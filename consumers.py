@@ -25,14 +25,11 @@ class CountConsumer(WebsocketConsumer):
 
     # Receive message from WebSocket
     def receive(self, text_data):
-        #print('Receive message from WebSocket')
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
-        print(message)
         a,i = message.split(',')
-        print(a)
         if 'addlog' == a:
-            async_to_sync(views.add_log(None, int(i)))
+            views.add_log(None, int(i))
         if 'take_a_break' == a:
             views.take_a_break(None, int(i))
         if 'lane' in a:
@@ -42,7 +39,6 @@ class CountConsumer(WebsocketConsumer):
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name, {"type": "count.message", "message": 'dummy'}
         )
-        print('gesendet')
 
 
     # Receive message from count group
