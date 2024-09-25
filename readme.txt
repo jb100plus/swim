@@ -6,6 +6,8 @@ pip install daphne
 # mysite/settings.py
 INSTALLED_APPS = [
     'daphne',
+    'counter',
+    'import_export',
 
 # eof
 ASGI_APPLICATION = "mysite.asgi.application"
