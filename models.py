@@ -3,27 +3,9 @@ from django.utils import timezone
 from django.db.models import Count
 from django.utils.translation import gettext
 from django.core.exceptions import ValidationError
-from datetime import time
+from datetime import timedelta
 
 
-
-# So the problem is that an Enum class is callable, and the templating system will try to call it,
-# which will raise an error and abort (returning an empty string: '').
-# https://stackoverflow.com/questions/35953132/how-to-access-enum-types-in-django-templates
-def forDjango(cls):
-    cls.do_not_call_in_templates = True
-    return cls
-
-
-'''
-class STATE(models.IntegerChoices):
-    SWIM = 10, gettext('swimming')
-    OUT = 20, gettext('out')
-    GONE = 30, gettext('gone')
-    DONE = 40, gettext('done')
-'''
-
-###@forDjango
 class STATE(models.IntegerChoices):
     SWIM = 10, 'swimming'
     IN = 20, 'in'
@@ -32,25 +14,33 @@ class STATE(models.IntegerChoices):
     DONE = 50, 'done'
 
 
+def getStateStr(state):
+    return {10: 'swimming',20: 'in', 30: 'out', 40: 'gone', 50: 'done'}[state]
+
 class Starter(models.Model):
     startnumber = models.CharField(max_length=6)
     firstname = models.CharField(max_length=30)
     lastname = models.CharField(max_length=30)
+    startingclass = models.CharField(max_length=30, default='person ')  # no relation because of import
+    teamname = models.CharField(max_length=30, default='n/a')  # no relation because of import
     lane = models.IntegerField(default=0)
-    state = models.IntegerField(choices=STATE.choices, default='10', verbose_name='state')
+    state = models.IntegerField(choices=STATE.choices, default='10')
 
     def __str__(self):
-        return f"{self.startnumber} {self.firstname} {self.lastname}"
+        return f"{self.startnumber} {self.lastname}, {self.firstname[0:5]}, {getStateStr(self.state)}"
+    
+    @property
+    def statestr(self):
+        return getStateStr(self.state)
 
-
-
+'''
 # not uses anymore, but can't be deleted it seems to resist in a migration
 def validate_time(value):
     if ((value.logtimestamp - value.starter.lastlog.log.logtimestamp).total_seconds()) < 8:
         raise ValidationError("To Fast!!!!!", params={"value": value},)
         return False
     return True
-
+'''
 
 class Log(models.Model):
     #logtimestamp = models.DateTimeField("timestamp logged", auto_now_add=True, validators=[validate_time,])
@@ -59,16 +49,22 @@ class Log(models.Model):
     kind = models.IntegerField(choices=STATE.choices, default='10', verbose_name='state')
     
     def __str__(self):
-        """Returns a string representation of a message."""
+        """Returns a string representation of a log"""
         logtimestamp = timezone.localtime(self.logtimestamp)
-        return f"{self.starter.startnumber} logged on {logtimestamp.strftime('%A, %d %B, %Y at %X')}"
+        return f"{self.starter.startnumber} - {logtimestamp.strftime('%d.%m.%Y %H:%M:%S')} {getStateStr(self.kind)}"
     
     def gettimestr(self):
         dt = timezone.localtime(self.logtimestamp)
         return f"{dt:%Y.%m.%d %H:%M:%S}.{dt.microsecond // 100000:01d}"
     
-    def since(self):
+    def since_sec(self):
         return int((timezone.now() - timezone.localtime(self.logtimestamp)).total_seconds())
+    
+    def since(self):
+        return str(timedelta(seconds=self.since_sec()))
+    
+    def kindstr(self):
+        return getStateStr(self.kind)
 
 
 class LastLog(models.Model):
@@ -80,11 +76,14 @@ class LastLog(models.Model):
         return f"'{str(self.starter)}' logged on { str(self.log)}"
 
     def new_Log_possible(self):
-        return self.log.since() > 5
+        return self.log.since_sec() > 5
 
 
-def getresult():
-    return Log.objects.values('starter__id', 'starter__firstname', 'starter__lastname').filter(kind=STATE.SWIM).annotate(count=Count('logtimestamp')).order_by('-count')
+def getresult():    
+    return Log.objects.values('starter__id', 'starter__firstname', 'starter__lastname', 'starter__startingclass', 'starter__state').\
+        filter(kind=STATE.SWIM).annotate(count=Count('logtimestamp')).\
+            order_by('-count')
+
 
 
 def add_log_kind(starter, kind):

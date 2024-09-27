@@ -3,35 +3,33 @@
 Home
 {% endblock %}
 {% block content %}
-<p>Logs für den Starter</p>
-<h2>Logged messages</h2>
+<h1 class=counterh1>logging for starter</h1>
 
 {% if log_list %}
+<h2>{{ log_list.0.starter }} - swam lanes: {{ logedlanes }}</h2>
     <table class="log_list">
         <thead>
         <tr>
-            <th>Starter</th>
             <th>Date Time</th>
+            <th>Kind</th>
         </tr>
         </thead>
         <tbody>
-        <form method="POST" class="log-form"></form>
-            {% csrf_token %}
-            {{ form.as_p }}
             {% for log in log_list %}
                 <tr>
-                    <td>
-                        {{ log.starter }}
+                    <td class="spaceRight">
+                        {{ log.gettimestr }}
                     </td>
                     <td>
-                        {{ log.gettimestr }}
+                        {{ log.kindstr }}
                     </td>
                 </tr>
             {% endfor %}
-        </form>
-        </tbody>
     </table>
-    <h2>Number of Logs: {{ log_list|length }}  </h2>
+    <p>Number of Logs: {{ log_list|length }}</p>
+    <p>Number of Logs swimming:{{ swimlogs }}</p>
+    
+
 {% else %}
     <p>No messages have been logged.</a></p>
 {% endif %}

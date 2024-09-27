@@ -1,25 +1,25 @@
 {% extends "counter/layout.html" %}
 {% block title %}
-Home
+Results
 {% endblock %}
 {% block content %}
-<h1 class="counterh1">starters currently not in the race</h1>
-<div id="startertable"></div>
+<h1 class="counterh1">results</h1>
+<div id="result"></div>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
-    reloadStartlist = function()
+    reloadResult = function()
         {
         $.ajax({
-        url: '{% url 'startlist' %}',
+        url: '{% url 'resultlist' %}',
         // get data from 'startlist'
         success: function(data) {
             if ($.trim(data)){
-                $('#startertable').html(data);
+                $('#result').html(data);
                 }
             }
     })};
 
-    $(document).ready(reloadStartlist)
+    $(document).ready(reloadResult)
     
     const startSocket = new WebSocket(
         'ws://'
@@ -28,23 +28,17 @@ Home
     );
 
     startSocket.onmessage = function(e) {
-        reloadStartlist();
+        reloadResult();
         const data = JSON.parse(e.data);
-        console.log(data)
+        //console.log(data)
         //window.location.reload()
     };
 
     startSocket.onclose = function(e) {
         console.error('Count socket closed unexpectedly');
     };
+    
 
-    addLog = function(e) {
-        console.log(e.value)
-        message = e.value + "," + e.id;
-        startSocket.send(JSON.stringify({
-            'message': message
-        }));
-    };
 </script>
 
 {% endblock %}

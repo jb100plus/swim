@@ -17,7 +17,6 @@ Home
     <div id="activestartertable"></div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
-
         reloadLoglist = function()
         {
             laneArray = []
@@ -51,7 +50,7 @@ Home
         countSocket.onmessage = function(e) {
             reloadLoglist();
             const data = JSON.parse(e.data);
-            console.log(data)
+            //console.log(data)
             //window.location.reload()
         };
     
@@ -60,7 +59,7 @@ Home
         };
 
         addLog = function(e) {
-            console.log(e.value)
+            //console.log(e.value)
             message = e.value + "," + e.id;
             countSocket.send(JSON.stringify({
                 'message': message

@@ -61,16 +61,32 @@ def startlist(request):
     return render(request, "counter/startlist.html", {'startlist': current_startlist})
 
 
+# outer html for the result view
+def result_list_view(request):
+    return render(request, "counter/result.html")
+
+# inner html for the result view
+def resultlist(request):
+    result = models.getresult()
+    context ={'result':result}
+    return render(request, "counter/resultlist.html", context=context)
+
+
+
 # show results and times for a starter
 class StarterLogListView(ListView):
     """Renders a page, with a list of all logs for a starter."""
     model = Log
-    ordering = ['-logtimestamp']
+    ordering = ['logtimestamp']
     #context_object_name="log_list",
     template_name="counter/logdetail.html"
 
     def get_context_data(self, **kwargs):
         context = super(StarterLogListView, self).get_context_data(**kwargs)
+        pk = self.kwargs["starter_id"]
+        swimlogs = super().get_queryset().filter(starter=pk, kind=STATE.SWIM).count()
+        context['swimlogs']= swimlogs
+        context['logedlanes'] = 2 * swimlogs
         return context
     
     def get_queryset(self):
@@ -78,10 +94,6 @@ class StarterLogListView(ListView):
         return super().get_queryset().filter(starter=pk)
 
 
-def about(request):
-    result = models.getresult()
-    context ={'result':result}
-    return render(request, "counter/about.html", context=context)
 
 def contact(request):
     return render(request, "counter/contact.html")
