@@ -33,10 +33,19 @@
 }
 
 /* The navigation bar */
-.navbottombar {
+.navbottombar2 {
   overflow: hidden;
   background-color: white; /* don't work without a color!!!*/
   position: fixed; /* Set the navbar to fixed position */
+  bottom: 0; 
+  width: 100%; /* Full width */
+  font-size: 10px;
+  text-align: center;
+  height: 30px;
+}
+
+/* The navigation bar */
+.navbottombar {
   bottom: 0; 
   width: 100%; /* Full width */
   font-size: 10px;
@@ -102,7 +111,20 @@
   border: 2px solid #1A1A1A;
   border-radius: 5px;
 }
+buttonblue4:focus{background-color:red;}
 
+.buttongreen2 {
+  background-color: #04AA6D; /* Green */
+  border: none;
+  color: white;
+  padding: 5px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border: 2px solid #1A1A1A;
+  border-radius: 5px;
+}
 
 .buttongreen {
   background-color: #04AA6D; /* Green */
@@ -138,3 +160,16 @@
   background-color: #bebebe;
 }
 */
+
+.buttongray {
+  background-color: #A0A0A0; /* gray */
+  border: none;
+  color: white;
+  padding: 5px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border: 2px solid #1A1A1A;
+  border-radius: 5px;
+}

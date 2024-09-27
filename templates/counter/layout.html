@@ -6,7 +6,6 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'counter/site.css' %}"/>
 </head>
-
 <body>
     <div class="navbar">
         <a href="{% url 'home' %}">Home</a>
@@ -19,8 +18,8 @@
         {% block content %}
         {% endblock %}
     </div>
-    <footer class=navbottombar>
-        <p>&copy; Jürgen Becker 2024</p>
+    <footer>
+        <p>footer</p>
     </footer>
 </body>
 </html>

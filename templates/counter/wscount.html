@@ -4,18 +4,32 @@ Home
 {% endblock %}
 {% block content %}
 <h1 class=counterh1>logging and counting</h1>
-<input type="checkbox" name="example[]" value="1"> lane 1
-<input type="checkbox" name="example[]" value="2"> lane 2
-<input type="checkbox" name="example[]" value="3"> lane 3
-<input type="checkbox" name="example[]" value="4"> lane 4
 
+<p style="text-align: left">
+    <input type="checkbox" name="lane" checked="True" value="1"> lane 1
+    <input type="checkbox" name="lane" checked="True" value="2"> lane 2
+    <input type="checkbox" name="lane" checked="True" value="3"> lane 3
+    <input type="checkbox" name="lane" checked="True" value="4"> lane 4
+    <input type="button" class="buttongray" value = "Show" onclick="reloadLoglist();"/>
+</p>
+
+</form>
     <div id="activestartertable"></div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
+
         reloadLoglist = function()
-            {
+        {
+            laneArray = []
+            $("input:checkbox[name=lane]:checked").each(function(){
+                laneArray.push($(this).val());
+            });
+            if (laneArray.length == 0){
+                    laneArray = ['0']
+            }
+            console.log(laneArray)
             $.ajax({
-            url: '{% url 'loglist' %}',
+            url: '{% url 'loglistlanes' 'dummylane' %}'.replace('dummylane', laneArray),
             // get data from 'loglist'
             success: function(data) {
                 if ($.trim(data)){

@@ -37,12 +37,15 @@ def count_list_view(request):
 
 
 # inner html fot the count_list_view
-def loglist(request):
+def loglistlanes(request, lanes):
+    lanes=lanes.split(',')
+    lanes=list(map(int, lanes))
     global current_loglist
     if current_loglist is None:
         current_loglist = LastLog.objects.filter(starter__state__in=[STATE.SWIM, STATE.IN]).order_by('log')
+    current_loglist_lane = current_loglist.filter(starter__lane__in=lanes).order_by('log')
     # render every call because timers calculated in html
-    return render(request, "counter/loglist.html", {'log_list': current_loglist})
+    return render(request, "counter/loglist.html", {'log_list': current_loglist_lane})
 
 
 # outer html for the start view
@@ -58,7 +61,7 @@ def startlist(request):
     return render(request, "counter/startlist.html", {'startlist': current_startlist})
 
 
-
+# show results and times for a starter
 class StarterLogListView(ListView):
     """Renders a page, with a list of all logs for a starter."""
     model = Log
@@ -113,3 +116,4 @@ def back_to_swim(request, starter_id, lane):
     layer = get_channel_layer()
     async_to_sync(layer.group_send)("countergroup", {'type': 'count.message', 'message': 'dummy'})
     return redirect('start')
+

@@ -12,6 +12,6 @@ urlpatterns = [
     path("take_a_break/<int:starter_id>", views.take_a_break, name='take_a_break'),
     path("back_to_swim/<int:starter_id>/<int:lane>", views.back_to_swim, name='back_to_swim'),
     path("logdetailview/<int:starter_id>", views.StarterLogListView.as_view(), name='logdetailview'),
-    path("loglist/", views.loglist, name='loglist'),
+    path("loglistlanes/<str:lanes>", views.loglistlanes, name='loglistlanes'),
     path("startlist/", views.startlist, name='startlist'),
 ]
